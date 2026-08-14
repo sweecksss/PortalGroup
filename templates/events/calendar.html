@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Календар подій — Портал групи{% endblock %}
+
+{% block extra_css %}
+<style>
+  .calendar-table { table-layout: fixed; }
+  .calendar-table th { width: 14.28%; }
+  .calendar-cell { height: 118px; vertical-align: top; padding: .4rem !important; }
+  .calendar-cell.out-of-month { background-color: #f8f9fa; }
+  .calendar-cell.is-today { background-color: #e7f1ff; box-shadow: inset 0 0 0 2px var(--bs-primary); }
+  .calendar-daynum { font-weight: 600; font-size: .85rem; text-decoration: none; }
+  .calendar-cell.out-of-month .calendar-daynum { color: #adb5bd; }
+  .calendar-event { display: block; font-size: .75rem; line-height: 1.25; margin-top: .2rem;
+                    padding: .15rem .35rem; border-radius: .25rem; background: var(--bs-primary);
+                    color: #fff; text-decoration: none; overflow: hidden; text-overflow: ellipsis;
+                    white-space: nowrap; }
+  .calendar-event:hover { background: #0a58ca; color: #fff; }
+  .calendar-event.past { background: #adb5bd; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <div>
+    <h1 class="h2 mb-1">Календар подій</h1>
+    <p class="text-muted mb-0">Події групи по днях місяця</p>
+  </div>
+  <div class="text-nowrap">
+    <a class="btn btn-outline-secondary" href="{% url 'events:list' %}"><i class="bi bi-list-ul"></i> Списком</a>
+    {% if user.is_authenticated and user.role == 'moderator' or user.is_authenticated and user.role == 'admin' or user.is_superuser %}
+    <a class="btn btn-primary" href="{% url 'events:create' %}"><i class="bi bi-plus-lg"></i> Додати подію</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-3 p-md-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <a class="btn btn-outline-secondary btn-sm"
+         href="{% url 'events:calendar_month' prev_month.year prev_month.month %}">
+        <i class="bi bi-chevron-left"></i> Попередній
+      </a>
+      <h2 class="h4 mb-0 text-center">{{ month_title }}</h2>
+      <a class="btn btn-outline-secondary btn-sm"
+         href="{% url 'events:calendar_month' next_month.year next_month.month %}">
+        Наступний <i class="bi bi-chevron-right"></i>
+      </a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered calendar-table mb-0">
+        <thead class="table-light text-center">
+          <tr>{% for name in weekday_names %}<th class="small text-uppercase text-muted">{{ name }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+          {% for week in weeks %}
+          <tr>
+            {% for cell in week %}
+            <td class="calendar-cell{% if not cell.in_month %} out-of-month{% endif %}{% if cell.is_today %} is-today{% endif %}">
+              <a class="calendar-daynum"
+                 href="{% url 'events:day' cell.date.year cell.date.month cell.date.day %}">{{ cell.date.day }}</a>
+              {% for event in cell.events %}
+              <a class="calendar-event{% if event.is_past %} past{% endif %}"
+                 href="{% url 'events:detail' event.pk %}"
+                 title="{{ event.title }} — {{ event.starts_at|date:'d.m.Y H:i' }}">
+                {% if event.start_date == cell.date %}{{ event.starts_at|date:'H:i' }}{% else %}<i class="bi bi-arrow-return-right"></i>{% endif %} {{ event.title }}
+              </a>
+              {% endfor %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center mt-3">
+      <a class="btn btn-link btn-sm" href="{% url 'events:calendar' %}">Поточний місяць</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

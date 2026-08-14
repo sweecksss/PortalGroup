@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}Головна — Портал групи{% endblock %}
+
+{% block content %}
+<section class="p-4 p-md-5 mb-4 rounded-3 text-white shadow-sm"
+         style="background: linear-gradient(135deg, #0d6efd 0%, #212529 100%);">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-8">
+      <h1 class="display-6 fw-bold mb-2"><i class="bi bi-mortarboard-fill me-2"></i>Портал групи</h1>
+      <p class="lead mb-3 text-white-50">
+        Єдиний простір групи: новини та оголошення, форум, електронний щоденник, події та календар,
+        опитування й голосування, матеріали, портфоліо та галерея.
+      </p>
+      {% if not user.is_authenticated %}
+      <a class="btn btn-light" href="{% url 'accounts:register' %}">Приєднатися</a>
+      <a class="btn btn-outline-light" href="{% url 'accounts:login' %}">Увійти</a>
+      {% else %}
+      <a class="btn btn-light" href="{% url 'events:calendar' %}"><i class="bi bi-calendar3 me-1"></i>Календар подій</a>
+      {% endif %}
+    </div>
+    <div class="col-lg-4">
+      <div class="row text-center g-2">
+        <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 py-3"><div class="h4 mb-0">{{ stats.users }}</div><small class="text-white-50">учасників</small></div></div>
+        <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 py-3"><div class="h4 mb-0">{{ stats.events }}</div><small class="text-white-50">подій</small></div></div>
+        <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 py-3"><div class="h4 mb-0">{{ stats.forum_categories }}</div><small class="text-white-50">тем форуму</small></div></div>
+        <div class="col-6"><div class="bg-white bg-opacity-10 rounded-3 py-3"><div class="h4 mb-0">{{ stats.materials }}</div><small class="text-white-50">матеріалів</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-calendar-event text-primary me-2"></i>Найближчі події</span>
+        <a class="small" href="{% url 'events:list' %}">Усі події →</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for event in upcoming_events %}
+        <li class="list-group-item">
+          <a class="text-decoration-none fw-semibold" href="{% url 'events:detail' event.pk %}">{{ event.title }}</a>
+          <div class="small text-muted">
+            {{ event.starts_at|date:'d.m.Y H:i' }}{% if event.location %} · {{ event.location }}{% endif %}
+          </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">Запланованих подій поки немає.</li>
+        {% endfor %}
+      </ul>
+      <div class="card-footer bg-white">
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'events:calendar' %}"><i class="bi bi-calendar3"></i> Календар подій</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-megaphone text-danger me-2"></i>Оголошення</span>
+        <a class="small" href="{% url 'announcements:list' %}">Усі оголошення →</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for item in announcements %}
+        <li class="list-group-item">
+          <a class="text-decoration-none fw-semibold" href="{% url 'announcements:detail' item.pk %}">{{ item.title }}</a>
+          <div class="small text-muted">{{ item.created_at|date:'d.m.Y H:i' }} · {{ item.author.username }}</div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">Оголошень поки немає.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-chat-dots text-success me-2"></i>Останнє на форумі</span>
+        <a class="small" href="{% url 'forum:category_list' %}">До форуму →</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for message in forum_messages %}
+        <li class="list-group-item">
+          <a class="text-decoration-none fw-semibold" href="{% url 'forum:category_detail' message.category.pk %}">{{ message.category.name }}</a>
+          <div class="small text-truncate">{{ message.text }}</div>
+          <div class="small text-muted">{{ message.author.username }} · {{ message.created_at|date:'d.m.Y H:i' }}</div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">Повідомлень поки немає.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white fw-semibold"><i class="bi bi-ui-checks text-warning me-2"></i>Опитування та голосування</div>
+      <ul class="list-group list-group-flush">
+        {% for survey in surveys %}
+        <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+          <a class="text-decoration-none" href="{% url 'surveys:start' survey.id %}">{{ survey.title }}</a>
+          <span class="badge bg-warning text-dark">опитування</span>
+        </li>
+        {% endfor %}
+        {% for voting in votings %}
+        <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+          <a class="text-decoration-none" href="{% url 'votings:detail' voting.pk %}">{{ voting.title }}</a>
+          <span class="badge bg-info text-dark">голосування</span>
+        </li>
+        {% endfor %}
+        {% if not surveys and not votings %}
+        <li class="list-group-item text-muted">Активних опитувань і голосувань немає.</li>
+        {% endif %}
+      </ul>
+      <div class="card-footer bg-white">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'votings:list' %}">Усі голосування</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-folder2-open text-primary me-2"></i>Матеріали</span>
+        <a class="small" href="{% url 'materials:list' %}">Усі матеріали →</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for material in materials %}
+        <li class="list-group-item">
+          <a class="text-decoration-none fw-semibold" href="{% url 'materials:detail' material.pk %}">{{ material.title }}</a>
+          <div class="small text-muted">{{ material.created_at|date:'d.m.Y' }} · {{ material.author.username }}</div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">Матеріалів поки немає.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-images text-info me-2"></i>Галерея</span>
+        <a class="small" href="{% url 'gallery:album_list' %}">До галереї →</a>
+      </div>
+      <div class="card-body">
+        {% if photos %}
+        <div class="row g-2">
+          {% for photo in photos %}
+          <div class="col-4">
+            <a href="{% url 'gallery:album_detail' photo.album.pk %}">
+              <img src="{{ photo.image.url }}" alt="{{ photo.caption }}"
+                   class="img-fluid rounded" style="height: 90px; width: 100%; object-fit: cover;">
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">Фотографій поки немає.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
