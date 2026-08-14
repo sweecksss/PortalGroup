@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Опитування — Портал групи{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div><h1 class="h2 mb-1">Опитування</h1><p class="text-muted mb-0">Візьміть участь в активних опитуваннях групи</p></div>
+</div>
+<div class="row g-3">
+  {% for survey in surveys %}
+    <div class="col-md-6"><article class="card h-100 shadow-sm border-0"><div class="card-body"><h2 class="h5">{{ survey.title }}</h2><p class="text-muted">{{ survey.description|default:'Без опису' }}</p><a class="btn btn-primary" href="{% url 'surveys:start' survey.pk %}">Почати</a></div></article></div>
+  {% empty %}
+    <div class="col-12"><div class="alert alert-info">Активних опитувань поки немає.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

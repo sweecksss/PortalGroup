@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Нове голосування — Портал групи{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 mx-auto" style="max-width:760px"><div class="card-body p-4"><h1 class="h3">Нове голосування</h1>
+  <form method="post">{% csrf_token %}
+    {% for field in form %}<div class="mb-3 {% if field.name == 'is_active' %}form-check{% endif %}"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>{% endfor %}
+    <button class="btn btn-primary">Створити</button> <a class="btn btn-outline-secondary" href="{% url 'votings:list' %}">Скасувати</a>
+  </form>
+</div></div>
+{% endblock %}

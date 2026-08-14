@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ voting.title }} — Голосування{% endblock %}
+
+{% block content %}
+<article class="card shadow-sm border-0 mx-auto" style="max-width:760px"><div class="card-body p-4">
+  <div class="d-flex justify-content-between gap-3"><div><h1 class="h3">{{ voting.title }}</h1>{% if voting.description %}<p class="text-muted">{{ voting.description }}</p>{% endif %}</div>
+  {% if user.is_authenticated and user.role == 'moderator' or user.is_authenticated and user.role == 'admin' or user.is_superuser %}<form method="post" action="{% url 'votings:toggle' voting.pk %}">{% csrf_token %}<button class="btn btn-outline-secondary btn-sm">{% if voting.is_active %}Завершити{% else %}Відкрити{% endif %}</button></form>{% endif %}</div>
+  {% if voting.is_active and user.is_authenticated %}
+    <form method="post" action="{% url 'votings:vote' voting.pk %}">{% csrf_token %}
+      {% for option in options %}<div class="form-check border rounded p-3 mb-2"><input class="form-check-input" type="radio" name="option" value="{{ option.pk }}" id="option{{ option.pk }}" {% if selected_option == option.pk %}checked{% endif %} required><label class="form-check-label w-100" for="option{{ option.pk }}">{{ option.text }} <span class="text-muted float-end">{{ option.vote_count }}</span></label></div>{% endfor %}
+      <button class="btn btn-primary">{% if selected_option %}Змінити голос{% else %}Проголосувати{% endif %}</button>
+    </form>
+  {% else %}
+    <ul class="list-group">{% for option in options %}<li class="list-group-item d-flex justify-content-between">{{ option.text }}<strong>{{ option.vote_count }}</strong></li>{% endfor %}</ul>
+    {% if not user.is_authenticated and voting.is_active %}<p class="text-muted mt-3 mb-0">Увійдіть, щоб проголосувати.</p>{% endif %}
+  {% endif %}
+</div></article>
+<a class="btn btn-link mt-3 px-0" href="{% url 'votings:list' %}">← До голосувань</a>
+{% endblock %}
