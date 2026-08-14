@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Голосування — Портал групи{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div><h1 class="h2 mb-1">Голосування</h1><p class="text-muted mb-0">Оберіть варіант і залиште свій голос.</p></div>
+  {% if user.is_authenticated and user.role == 'moderator' or user.is_authenticated and user.role == 'admin' or user.is_superuser %}<a class="btn btn-primary" href="{% url 'votings:create' %}"><i class="bi bi-plus-lg"></i> Створити</a>{% endif %}
+</div>
+<div class="row g-3">
+  {% for voting in votings %}
+    <div class="col-md-6"><article class="card h-100 shadow-sm border-0"><div class="card-body"><span class="badge {% if voting.is_active %}text-bg-success{% else %}text-bg-secondary{% endif %}">{% if voting.is_active %}Активне{% else %}Завершене{% endif %}</span><h2 class="h5 mt-2"><a class="text-decoration-none" href="{% url 'votings:detail' voting.pk %}">{{ voting.title }}</a></h2><p class="text-muted mb-0">{{ voting.description|default:'Без опису'|truncatechars:120 }}</p></div><div class="card-footer bg-white border-0 text-muted small">Створив(ла): {{ voting.author.username }}</div></article></div>
+  {% empty %}
+    <div class="col-12"><div class="alert alert-info">Голосувань поки немає.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

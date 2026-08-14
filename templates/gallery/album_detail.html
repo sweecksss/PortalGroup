@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ album.title }} — Галерея{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+  <div>
+    <h1 class="h2 mb-1">{{ album.title }}</h1>
+    <p class="text-muted mb-0">{{ album.description|default:'Без опису' }}</p>
+  </div>
+  {% if user.is_authenticated %}<a class="btn btn-primary text-nowrap" href="{% url 'gallery:photo_upload' album.pk %}"><i class="bi bi-upload"></i> Додати файл</a>{% endif %}
+</div>
+<div class="row g-3">
+  {% for photo in photos %}
+    <div class="col-sm-6 col-lg-4"><article class="card h-100 shadow-sm border-0">
+      {% if photo.is_image %}<a href="{{ photo.image.url }}" target="_blank"><img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.caption|default:album.title }}" style="height:230px;object-fit:cover"></a>
+      {% else %}<div class="card-body text-center py-5"><i class="bi bi-file-earmark-arrow-down display-5 text-primary"></i></div>{% endif %}
+      <div class="card-body py-3"><p class="mb-2">{{ photo.caption|default:photo.image.name }}</p><a class="btn btn-outline-primary btn-sm" href="{{ photo.image.url }}" download>Завантажити</a></div>
+    </article></div>
+  {% empty %}<div class="col-12"><div class="alert alert-info">У цьому альбомі ще немає файлів.</div></div>{% endfor %}
+</div>
+<a class="btn btn-link mt-3 px-0" href="{% url 'gallery:album_list' %}">← До всіх альбомів</a>
+{% endblock %}

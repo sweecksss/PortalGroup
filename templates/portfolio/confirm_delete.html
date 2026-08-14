@@ -1,0 +1,2 @@
+{% extends 'base.html' %}
+{% block content %}<div class="card shadow-sm border-0 mx-auto" style="max-width:600px"><div class="card-body p-4"><h1 class="h3">Видалити роботу?</h1><p>«{{ item.title }}» буде видалено.</p><form method="post">{% csrf_token %}<button class="btn btn-danger">Видалити</button> <a class="btn btn-outline-secondary" href="{% url 'portfolio:detail' item.pk %}">Скасувати</a></form></div></div>{% endblock %}

@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}{{ entry.title }} — Щоденник{% endblock %}
+{% block content %}<article class="card shadow-sm border-0"><div class="card-body p-4"><div class="d-flex justify-content-between gap-3"><div><h1 class="h2">{{ entry.title }}</h1><p class="text-muted">Оновлено {{ entry.updated_at|date:'d.m.Y H:i' }}</p></div><div class="text-nowrap"><a class="btn btn-outline-primary btn-sm" href="{% url 'diary:edit' entry.pk %}">Редагувати</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'diary:delete' entry.pk %}">Видалити</a></div></div><div style="white-space: pre-line">{{ entry.content }}</div></div></article><a class="btn btn-link mt-3 px-0" href="{% url 'diary:home' %}">← До записів</a>{% endblock %}
