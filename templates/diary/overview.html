@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Щоденник - Портал групи{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4"><i class="bi bi-journal-text me-2"></i>Електронний щоденник</h2>
+
+{% if table %}
+    <div class="table-responsive shadow-sm rounded-3">
+        <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Учень</th>
+                    <th>Клас</th>
+                    {% for subject in subjects %}
+                        <th class="text-center">{{ subject.name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'diary:student_detail' row.student.pk %}">
+                                {{ row.student.user.get_full_name|default:row.student.user.username }}
+                            </a>
+                        </td>
+                        <td>{{ row.student.school_class }}</td>
+                        {% for grade in row.grades %}
+                            <td class="text-center">
+                                {% if grade %}
+                                    <span class="badge bg-primary">{{ grade|floatformat:1 }}</span>
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">Поки що немає жодного учня або оцінки. Додайте їх через адмін-панель.</div>
+{% endif %}
+{% endblock %}
