@@ -1,10 +1,10 @@
 from django import forms
-from .models import PortfolioItem
+from .models import Project
 
 
-class PortfolioItemForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
-        model = PortfolioItem
+        model = Project
         fields = ('title', 'description', 'link', 'image')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
