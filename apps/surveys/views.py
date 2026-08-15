@@ -21,6 +21,11 @@ def _already_completed(survey, user, session_key):
     return qs.filter(session_key=session_key).exists()
 
 
+def survey_list(request):
+    surveys = Survey.objects.filter(is_active=True).order_by('-created_at')
+    return render(request, 'surveys/list.html', {'surveys': surveys})
+
+
 def start_survey(request, survey_id):
     survey = get_object_or_404(Survey, pk=survey_id, is_active=True)
     user, session_key = _get_identity(request)
