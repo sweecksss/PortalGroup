@@ -17,6 +17,12 @@ class AlbumAdmin(admin.ModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('album', 'caption', 'uploaded_by', 'uploaded_at')
-    list_filter = ('uploaded_at', 'album')
+    list_display = ('album', 'caption', 'uploaded_by', 'uploaded_at', 'is_approved')
+    list_filter = ('is_approved', 'uploaded_at', 'album')
     search_fields = ('caption',)
+    actions = ['approve_selected']
+
+    @admin.action(description='Схвалити вибрані файли')
+    def approve_selected(self, request, queryset):
+        updated = queryset.update(is_approved=True)
+        self.message_user(request, f'Схвалено файлів: {updated}.')

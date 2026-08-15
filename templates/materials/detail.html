@@ -1,3 +1,44 @@
 {% extends 'base.html' %}
 {% block title %}{{ material.title }} — Матеріали{% endblock %}
-{% block content %}<article class="card shadow-sm border-0"><div class="card-body p-md-4"><div class="d-flex justify-content-between gap-3"><div><span class="badge text-bg-light border text-uppercase">{{ material.extension|default:'файл' }}</span><h1 class="h2 mt-2">{{ material.title }}</h1><p class="text-muted">Додав(ла) {{ material.author.username }} · {{ material.created_at|date:'d.m.Y, H:i' }}</p></div>{% if user == material.author or user.role == 'moderator' or user.role == 'admin' or user.is_superuser %}<div class="text-nowrap"><a class="btn btn-outline-primary btn-sm" href="{% url 'materials:edit' material.pk %}">Редагувати</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'materials:delete' material.pk %}">Видалити</a></div>{% endif %}</div>{% if material.description %}<p style="white-space:pre-line">{{ material.description }}</p>{% endif %}<a class="btn btn-primary" href="{{ material.file.url }}" download><i class="bi bi-download"></i> Завантажити файл</a>{% if material.extension == 'pdf' or material.extension == 'jpg' or material.extension == 'jpeg' or material.extension == 'png' or material.extension == 'gif' or material.extension == 'webp' %}<a class="btn btn-outline-secondary ms-2" href="{{ material.file.url }}" target="_blank">Переглянути</a>{% endif %}</div></article><a class="btn btn-link mt-3 px-0" href="{% url 'materials:list' %}">← До всіх матеріалів</a>{% endblock %}
+{% block content %}
+<article class="card shadow-sm border-0"><div class="card-body p-md-4">
+  <div class="d-flex justify-content-between gap-3">
+    <div>
+      <span class="badge text-bg-light border text-uppercase">{{ material.kind }}</span>
+      <h1 class="h2 mt-2">{{ material.title }}</h1>
+      <p class="text-muted">Додав(ла) {{ material.author.username }} · {{ material.created_at|date:'d.m.Y, H:i' }}</p>
+    </div>
+    {% if user == material.author or user.role == 'moderator' or user.role == 'admin' or user.is_superuser %}
+    <div class="text-nowrap">
+      <a class="btn btn-outline-primary btn-sm" href="{% url 'materials:edit' material.pk %}">Редагувати</a>
+      <a class="btn btn-outline-danger btn-sm" href="{% url 'materials:delete' material.pk %}">Видалити</a>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if material.description %}<p style="white-space:pre-line">{{ material.description }}</p>{% endif %}
+
+  {% if material.youtube_embed_url %}
+    <div class="ratio ratio-16x9 mb-3 rounded overflow-hidden">
+      <iframe src="{{ material.youtube_embed_url }}" title="{{ material.title }}" allowfullscreen
+              allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  {% elif material.is_image %}
+    <img src="{{ material.file.url }}" alt="{{ material.title }}" class="img-fluid rounded mb-3">
+  {% elif material.is_video %}
+    <video class="w-100 rounded mb-3" style="max-height:520px;background:#000" controls preload="metadata">
+      <source src="{{ material.file.url }}">Ваш браузер не підтримує відео.
+    </video>
+  {% elif material.is_audio %}
+    <audio class="w-100 mb-3" controls preload="metadata"><source src="{{ material.file.url }}"></audio>
+  {% elif material.is_pdf %}
+    <div class="ratio ratio-4x3 mb-3 rounded overflow-hidden border">
+      <iframe src="{{ material.file.url }}" title="{{ material.title }}"></iframe>
+    </div>
+  {% endif %}
+
+  {% if material.file %}<a class="btn btn-primary" href="{{ material.file.url }}" download><i class="bi bi-download"></i> Завантажити файл</a>{% endif %}
+  {% if material.link %}<a class="btn btn-outline-primary {% if material.file %}ms-2{% endif %}" href="{{ material.link }}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Відкрити посилання</a>{% endif %}
+</div></article>
+<a class="btn btn-link mt-3 px-0" href="{% url 'materials:list' %}">← До всіх матеріалів</a>
+{% endblock %}

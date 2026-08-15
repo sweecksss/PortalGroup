@@ -78,6 +78,18 @@ class CategoryCreateView(LoginRequiredMixin, ModeratorRequiredMixin, generic.Cre
         return super().form_valid(form)
 
 
+class CategoryUpdateView(LoginRequiredMixin, ModeratorRequiredMixin, generic.UpdateView):
+    """Редагування ветки (тільки модератор/адмін)."""
+    model = ForumCategory
+    form_class = ForumCategoryForm
+    template_name = 'forum/category_form.html'
+    login_url = 'accounts:login'
+
+    def get_success_url(self):
+        messages.success(self.request, f'Тему "{self.object.name}" оновлено.')
+        return reverse('forum:category_detail', kwargs={'pk': self.object.pk})
+
+
 class CategoryDeleteView(LoginRequiredMixin, ModeratorRequiredMixin, generic.DeleteView):
     """Видалення ветки (тільки модератор/адмін)."""
     model = ForumCategory

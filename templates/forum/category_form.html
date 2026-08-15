@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Нова тема - Форум{% endblock %}
+{% block title %}{% if object %}Редагування теми{% else %}Нова тема{% endif %} - Форум{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card shadow border-0 rounded-4">
             <div class="card-header bg-dark text-white text-center py-3 rounded-top-4">
-                <h4 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>Нова тема форуму</h4>
+                <h4 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>{% if object %}Редагування теми{% else %}Нова тема форуму{% endif %}</h4>
             </div>
             <div class="card-body p-4">
                 <form method="post" novalidate>
@@ -31,7 +31,7 @@
 
                     <div class="d-grid mt-4">
                         <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold">
-                            <i class="bi bi-check-lg me-1"></i>Створити
+                            <i class="bi bi-check-lg me-1"></i>{% if object %}Зберегти{% else %}Створити{% endif %}
                         </button>
                     </div>
                 </form>

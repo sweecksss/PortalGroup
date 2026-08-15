@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалити голосування — Портал групи{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 mx-auto" style="max-width:600px"><div class="card-body p-4">
+  <h1 class="h3">Видалити голосування?</h1>
+  <p>«{{ voting.title }}» буде видалено разом з усіма варіантами та поданими голосами.</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger">Видалити</button>
+    <a class="btn btn-outline-secondary" href="{% url 'votings:detail' voting.pk %}">Скасувати</a>
+  </form>
+</div></div>
+{% endblock %}

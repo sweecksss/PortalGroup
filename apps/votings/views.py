@@ -54,6 +54,42 @@ def create_voting(request):
     return render(request, 'votings/form.html', {'form': form})
 
 
+def _sync_options(voting, texts):
+    """Приводить варіанти голосування до нового списку, зберігаючи голоси за незмінені."""
+    existing = {option.text: option for option in voting.options.all()}
+    for text in texts:
+        if text not in existing:
+            VotingOption.objects.create(voting=voting, text=text)
+    for text, option in existing.items():
+        if text not in texts:
+            option.delete()
+
+
+@login_required
+@moderator_required
+def edit_voting(request, pk):
+    voting = get_object_or_404(Voting, pk=pk)
+    initial = {'options': '\n'.join(voting.options.values_list('text', flat=True))}
+    form = VotingForm(request.POST or None, instance=voting, initial=initial)
+    if request.method == 'POST' and form.is_valid():
+        voting = form.save()
+        _sync_options(voting, form.cleaned_data['options'])
+        messages.success(request, 'Голосування оновлено.')
+        return redirect('votings:detail', pk=voting.pk)
+    return render(request, 'votings/form.html', {'form': form, 'voting': voting})
+
+
+@login_required
+@moderator_required
+def delete_voting(request, pk):
+    voting = get_object_or_404(Voting, pk=pk)
+    if request.method == 'POST':
+        voting.delete()
+        messages.success(request, 'Голосування видалено.')
+        return redirect('votings:list')
+    return render(request, 'votings/confirm_delete.html', {'voting': voting})
+
+
 @login_required
 @moderator_required
 def toggle_voting(request, pk):

@@ -18,6 +18,6 @@ class PhotoForm(forms.ModelForm):
         model = Photo
         fields = ('image', 'caption')
         widgets = {
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*,video/*'}),
             'caption': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Підпис до фото (необов’язково)'}),
         }

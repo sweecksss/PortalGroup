@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count
+
+from apps.accounts.decorators import moderator_required
 
 from .models import Answer, Choice, Question, Survey, SurveyCompletion
 
@@ -106,7 +107,7 @@ def thanks_view(request, survey_id):
     return render(request, 'surveys/thanks.html', {'survey': survey})
 
 
-@staff_member_required
+@moderator_required
 def results_view(request, survey_id):
     survey = get_object_or_404(Survey, pk=survey_id)
     questions = survey.questions.prefetch_related('choices', 'answers')
