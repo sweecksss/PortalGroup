@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db.models.functions import Coalesce
+from django.shortcuts import redirect
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import generic
 
 from apps.announcements.models import Announcement
@@ -42,3 +44,14 @@ class HomeView(generic.TemplateView):
             'materials': Material.objects.count(),
         }
         return context
+
+
+def toggle_theme(request):
+    """Перемикає світлу й темну тему та повертає користувача на ту саму сторінку."""
+    request.session['theme'] = 'light' if request.session.get('theme') == 'dark' else 'dark'
+
+    next_url = request.GET.get('next')
+    if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()},
+                                                    require_https=request.is_secure()):
+        return redirect(next_url)
+    return redirect('home')

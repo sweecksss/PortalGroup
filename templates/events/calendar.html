@@ -4,18 +4,18 @@
 {% block extra_css %}
 <style>
   .calendar-table { table-layout: fixed; }
-  .calendar-table th { width: 14.28%; }
+  .calendar-table th { width: 14.28%; background-color: var(--bs-secondary-bg); color: var(--bs-body-color); }
   .calendar-cell { height: 118px; vertical-align: top; padding: .4rem !important; }
-  .calendar-cell.out-of-month { background-color: #f8f9fa; }
-  .calendar-cell.is-today { background-color: #e7f1ff; box-shadow: inset 0 0 0 2px var(--bs-primary); }
+  .calendar-cell.out-of-month { background-color: var(--bs-tertiary-bg); }
+  .calendar-cell.is-today { background-color: var(--bs-primary-bg-subtle); box-shadow: inset 0 0 0 2px var(--bs-primary); }
   .calendar-daynum { font-weight: 600; font-size: .85rem; text-decoration: none; }
-  .calendar-cell.out-of-month .calendar-daynum { color: #adb5bd; }
+  .calendar-cell.out-of-month .calendar-daynum { color: var(--bs-secondary-color); }
   .calendar-event { display: block; font-size: .75rem; line-height: 1.25; margin-top: .2rem;
                     padding: .15rem .35rem; border-radius: .25rem; background: var(--bs-primary);
                     color: #fff; text-decoration: none; overflow: hidden; text-overflow: ellipsis;
                     white-space: nowrap; }
-  .calendar-event:hover { background: #0a58ca; color: #fff; }
-  .calendar-event.past { background: #adb5bd; }
+  .calendar-event:hover { background: var(--bs-primary-border-subtle); color: var(--bs-emphasis-color); }
+  .calendar-event.past { background: var(--bs-secondary); }
 </style>
 {% endblock %}
 
@@ -49,8 +49,8 @@
 
     <div class="table-responsive">
       <table class="table table-bordered calendar-table mb-0">
-        <thead class="table-light text-center">
-          <tr>{% for name in weekday_names %}<th class="small text-uppercase text-muted">{{ name }}</th>{% endfor %}</tr>
+        <thead class="text-center">
+          <tr>{% for name in weekday_names %}<th class="small text-uppercase">{{ name }}</th>{% endfor %}</tr>
         </thead>
         <tbody>
           {% for week in weeks %}

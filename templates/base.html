@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" data-bs-theme="{{ theme }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
   <link href="/static/css/style.css" rel="stylesheet">
   {% block extra_css %}{% endblock %}
 </head>
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 <header class="sticky-top shadow-sm"><nav class="navbar navbar-expand-lg navbar-dark bg-dark"><div class="container">
   <a class="navbar-brand fw-bold text-primary" href="/"><i class="bi bi-mortarboard-fill me-1"></i>Портал групи</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
   <div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav me-auto">
     <li class="nav-item"><a class="nav-link" href="/announcements/">Оголошення</a></li><li class="nav-item"><a class="nav-link" href="/forum/">Форум</a></li><li class="nav-item"><a class="nav-link" href="/diary/">Щоденник</a></li><li class="nav-item"><a class="nav-link" href="/events/">Події</a></li><li class="nav-item"><a class="nav-link" href="/events/calendar/">Календар</a></li><li class="nav-item"><a class="nav-link" href="/surveys/">Опитування</a></li><li class="nav-item"><a class="nav-link" href="/votings/">Голосування</a></li><li class="nav-item"><a class="nav-link" href="/materials/">Матеріали</a></li><li class="nav-item"><a class="nav-link" href="/portfolio/">Портфоліо</a></li><li class="nav-item"><a class="nav-link" href="/gallery/">Галерея</a></li>
-  </ul><ul class="navbar-nav ms-auto align-items-lg-center">{% if user.is_authenticated %}
+  </ul><ul class="navbar-nav ms-auto align-items-lg-center"><li class="nav-item"><a class="nav-link" href="{% url 'toggle_theme' %}?next={{ request.get_full_path|urlencode }}" title="{% if theme == 'dark' %}Світла тема{% else %}Темна тема{% endif %}"><i class="bi bi-{% if theme == 'dark' %}sun{% else %}moon-stars{% endif %}"></i><span class="d-lg-none ms-2">{% if theme == 'dark' %}Світла тема{% else %}Темна тема{% endif %}</span></a></li>{% if user.is_authenticated %}
     {% if user.role == 'moderator' or user.role == 'admin' or user.is_superuser %}<li class="nav-item"><a class="nav-link text-warning" href="{% url 'accounts:user_list' %}"><i class="bi bi-people-fill me-1"></i>Користувачі</a></li>{% endif %}
     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle me-1"></i>{{ user.username }}</a><ul class="dropdown-menu dropdown-menu-end shadow"><li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Мій профіль</a></li><li><a class="dropdown-item" href="{% url 'accounts:profile_edit' %}">Редагувати профіль</a></li>{% if user.is_staff or user.is_superuser %}<li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="/admin/">Панель адміністратора</a></li>{% endif %}<li><hr class="dropdown-divider"></li><li><form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button type="submit" class="dropdown-item text-danger">Вийти</button></form></li></ul></li>
   {% else %}<li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Вхід</a></li><li class="nav-item"><a class="btn btn-primary btn-sm ms-lg-2" href="{% url 'accounts:register' %}">Реєстрація</a></li>{% endif %}</ul></div>

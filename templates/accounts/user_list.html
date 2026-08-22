@@ -5,7 +5,7 @@
 {% block content %}
 <div class="row mb-4 align-items-center">
     <div class="col-md-6">
-        <h2 class="fw-bold text-dark mb-0">
+        <h2 class="fw-bold text-body mb-0">
             <i class="bi bi-people-fill text-primary me-2"></i>Користувачі системи
         </h2>
         <p class="text-muted mb-0">Управління акаунтами та ролями користувачів</p>
@@ -52,7 +52,7 @@
                                     </div>
                                 {% endif %}
                                 <div>
-                                    <a href="{% url 'accounts:profile_detail' target_user.pk %}" class="fw-bold text-dark text-decoration-none">
+                                    <a href="{% url 'accounts:profile_detail' target_user.pk %}" class="fw-bold text-body text-decoration-none">
                                         {{ target_user.username }}
                                     </a>
                                 </div>

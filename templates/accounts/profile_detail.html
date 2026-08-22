@@ -30,21 +30,21 @@
             <div class="card-body p-4">
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <div class="p-3 bg-light rounded-3 border">
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
                             <small class="text-muted d-block mb-1"><i class="bi bi-envelope me-1"></i>Email</small>
-                            <span class="fw-semibold text-dark">{{ profile_user.email|default:"Не вказано" }}</span>
+                            <span class="fw-semibold text-body">{{ profile_user.email|default:"Не вказано" }}</span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="p-3 bg-light rounded-3 border">
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
                             <small class="text-muted d-block mb-1"><i class="bi bi-telephone me-1"></i>Телефон</small>
-                            <span class="fw-semibold text-dark">{{ profile_user.phone|default:"Не вказано" }}</span>
+                            <span class="fw-semibold text-body">{{ profile_user.phone|default:"Не вказано" }}</span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="p-3 bg-light rounded-3 border">
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
                             <small class="text-muted d-block mb-1"><i class="bi bi-cake2 me-1"></i>Дата народження</small>
-                            <span class="fw-semibold text-dark">
+                            <span class="fw-semibold text-body">
                                 {% if profile_user.date_of_birth %}
                                     {{ profile_user.date_of_birth|date:"d.m.Y" }}
                                 {% else %}
@@ -54,15 +54,15 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="p-3 bg-light rounded-3 border">
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
                             <small class="text-muted d-block mb-1"><i class="bi bi-calendar-check me-1"></i>Дата реєстрації</small>
-                            <span class="fw-semibold text-dark">{{ profile_user.date_joined|date:"d.m.Y" }}</span>
+                            <span class="fw-semibold text-body">{{ profile_user.date_joined|date:"d.m.Y" }}</span>
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="p-3 bg-light rounded-3 border">
+                        <div class="p-3 bg-body-tertiary rounded-3 border">
                             <small class="text-muted d-block mb-1"><i class="bi bi-card-text me-1"></i>Про себе</small>
-                            <p class="mb-0 text-dark" style="white-space: pre-line;">{{ profile_user.bio|default:"Користувач ще не додав інформацію про себе." }}</p>
+                            <p class="mb-0 text-body" style="white-space: pre-line;">{{ profile_user.bio|default:"Користувач ще не додав інформацію про себе." }}</p>
                         </div>
                     </div>
                 </div>

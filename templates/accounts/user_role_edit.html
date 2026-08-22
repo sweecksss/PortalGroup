@@ -10,7 +10,7 @@
                 <h4 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i>Зміна ролі користувача</h4>
             </div>
             <div class="card-body p-4">
-                <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3 border">
+                <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-body-tertiary rounded-3 border">
                     {% if target_user.avatar %}
                         <img src="{{ target_user.avatar.url }}" alt="{{ target_user.username }}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
                     {% else %}
@@ -19,7 +19,7 @@
                         </div>
                     {% endif %}
                     <div>
-                        <h5 class="mb-0 fw-bold text-dark">{{ target_user.username }}</h5>
+                        <h5 class="mb-0 fw-bold text-body">{{ target_user.username }}</h5>
                         <small class="text-muted">{{ target_user.email|default:"Без email" }}</small>
                         <div>
                             <span class="badge {% if target_user.role == 'admin' or target_user.is_superuser %}bg-danger{% elif target_user.role == 'moderator' %}bg-warning text-dark{% else %}bg-secondary{% endif %} mt-1">

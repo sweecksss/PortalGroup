@@ -32,7 +32,7 @@
 <div class="row g-4">
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="card-header bg-body d-flex justify-content-between align-items-center">
         <span class="fw-semibold"><i class="bi bi-calendar-event text-primary me-2"></i>Найближчі події</span>
         <a class="small" href="{% url 'events:list' %}">Усі події →</a>
       </div>
@@ -48,7 +48,7 @@
         <li class="list-group-item text-muted">Запланованих подій поки немає.</li>
         {% endfor %}
       </ul>
-      <div class="card-footer bg-white">
+      <div class="card-footer bg-body">
         <a class="btn btn-sm btn-outline-primary" href="{% url 'events:calendar' %}"><i class="bi bi-calendar3"></i> Календар подій</a>
       </div>
     </div>
@@ -56,7 +56,7 @@
 
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="card-header bg-body d-flex justify-content-between align-items-center">
         <span class="fw-semibold"><i class="bi bi-megaphone text-danger me-2"></i>Оголошення</span>
         <a class="small" href="{% url 'announcements:list' %}">Усі оголошення →</a>
       </div>
@@ -75,7 +75,7 @@
 
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="card-header bg-body d-flex justify-content-between align-items-center">
         <span class="fw-semibold"><i class="bi bi-chat-dots text-success me-2"></i>Останнє на форумі</span>
         <a class="small" href="{% url 'forum:category_list' %}">До форуму →</a>
       </div>
@@ -95,7 +95,7 @@
 
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white fw-semibold"><i class="bi bi-ui-checks text-warning me-2"></i>Опитування та голосування</div>
+      <div class="card-header bg-body fw-semibold"><i class="bi bi-ui-checks text-warning me-2"></i>Опитування та голосування</div>
       <ul class="list-group list-group-flush">
         {% for survey in surveys %}
         <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
@@ -113,7 +113,7 @@
         <li class="list-group-item text-muted">Активних опитувань і голосувань немає.</li>
         {% endif %}
       </ul>
-      <div class="card-footer bg-white">
+      <div class="card-footer bg-body">
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'surveys:list' %}">Усі опитування</a>
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'votings:list' %}">Усі голосування</a>
       </div>
@@ -122,7 +122,7 @@
 
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="card-header bg-body d-flex justify-content-between align-items-center">
         <span class="fw-semibold"><i class="bi bi-folder2-open text-primary me-2"></i>Матеріали</span>
         <a class="small" href="{% url 'materials:list' %}">Усі матеріали →</a>
       </div>
@@ -141,7 +141,7 @@
 
   <div class="col-lg-6">
     <div class="card shadow-sm border-0 h-100">
-      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="card-header bg-body d-flex justify-content-between align-items-center">
         <span class="fw-semibold"><i class="bi bi-images text-info me-2"></i>Галерея</span>
         <a class="small" href="{% url 'gallery:album_list' %}">До галереї →</a>
       </div>
