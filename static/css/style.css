@@ -4,3 +4,17 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
+/* Роздільники між пунктами меню у шапці */
+@media (min-width: 992px) {
+    .navbar .navbar-nav > .nav-item + .nav-item > .nav-link {
+        border-left: 1px solid rgba(255, 255, 255, .18);
+    }
+    .navbar .navbar-nav > .nav-item > .nav-link {
+        padding-left: .85rem;
+        padding-right: .85rem;
+    }
+    .navbar .navbar-nav.ms-auto {
+        margin-left: 1rem;
+    }
+}
